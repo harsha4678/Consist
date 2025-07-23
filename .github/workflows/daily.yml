@@ -2,9 +2,10 @@ name: Daily Commit
 
 on:
   schedule:
-    - cron: '0 6 * * *'   # 6 AM UTC → 11:30 AM IST
-    - cron: '0 18 * * *'  # 6 PM UTC → 11:30 PM IST
-  workflow_dispatch:       # Allow manual trigger
+    - cron: '0 6 * * *'   # 6 AM UTC (11:30 AM IST)
+    - cron: '57 6 * * *'  # 06:57 AM UTC = 12:27 PM IST
+    - cron: '0 18 * * *'  # 6 PM UTC (11:30 PM IST)
+  workflow_dispatch:      # Manual trigger
 
 jobs:
   commit:
@@ -14,14 +15,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Make a small change
+      - name: Make a dummy commit
         run: |
-          echo "Updated on $(date)" >> activity.txt
-
-      - name: Commit changes
-        run: |
-          git config user.name "harsha4678"
-          git config user.email "perumallaharshavardhan6@gmail.com"
-          git add activity1.txt
-          git commit -m "Daily update $(date)" || echo "No changes to commit"
+          date >> daily.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add activity.txt
+          git commit -m "🕒 Daily commit - $(date -u '+%Y-%m-%d %H:%M:%S')"
           git push
